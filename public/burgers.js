@@ -1,34 +1,43 @@
-$(".change").on("click", function() {
-    let id = $(this).data("id");
 
-    $.ajax("/api/burgers/" + id, {
-        type: "PUT"
-    }).then(function() {
-        location.reload();
-    }).catch(function(err) {
-        console.log(err);
-    })
-});
 
-$(".add").on("submit", function(event) {
-    
-    event.preventDefault();
-    console.log("hey");
 
-    let newBurger = {
-        burgerName: $("#newBurger").val().trim()
-    }
+$(function() {
 
-    $.ajax("/api/burgers", {
+    $(".change-devoured").on("click", function(event) {
+      var id = $(this).data("id");
+      var newDevoured = $(this).data("newdevoured");
+  
+      var newDevouredState = {
+        devoured: newDevoured
+      };
+      $.ajax("/api/burgers/" + id, {
+        type: "PUT",
+        data: newDevouredState
+      }).then(
+        function() {
+          location.reload();
+        }
+      );
+    });
+  
+    $(".create-form").on("submit", function(event) {
+  
+      event.preventDefault();
+  
+      var newBurger = {
+        burger_name: $("#ca").val().trim(),
+        devoured: false
+      };
+  
+  
+      $.ajax("/api/burgers", {
         type: "POST",
         data: newBurger
-    }).then(
+      }).then(
         function() {
-          console.log("added new burger");
-          // Reload the page to get the updated list
-        //   location.reload();
+  
+          location.reload();
         }
-    ).catch(function(err) {
-        console.log(err);
+      );
     });
-});
+  });
